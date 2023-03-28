@@ -8,6 +8,9 @@ lvim.colorscheme = 'ayu-dark'
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.opt.relativenumber = true
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldenable = false
 
 -- general
 lvim.log.level = "info"
