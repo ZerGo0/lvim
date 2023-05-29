@@ -5,12 +5,9 @@
 lvim.colorscheme = 'ayu-dark'
 
 -- vim options
-vim.opt.shiftwidth = 2
-vim.opt.tabstop = 2
-vim.opt.relativenumber = true
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt.foldenable = false
+vim.o.shiftwidth = 2
+vim.o.tabstop = 2
+vim.o.relativenumber = true
 
 -- general
 lvim.log.level = "info"
@@ -262,7 +259,7 @@ lvim.plugins = {
       auto_open = true,
       use_diagnostic_signs = false -- enabling this will use the signs defined in your lsp client
     },
-  }
+  },
 }
 
 -- -- Autocommands (`:help autocmd`) <https://neovim.io/doc/user/autocmd.html>
