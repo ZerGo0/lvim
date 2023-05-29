@@ -123,8 +123,7 @@ lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 
 -- Automatically install missing parsers when entering buffer
 lvim.builtin.treesitter.auto_install = true
-lvim.lsp.diagnostics.update_in_insert = true
-
+vim.diagnostic.config({ update_in_insert = true })
 -- lvim.builtin.treesitter.ignore_install = { "haskell" }
 
 -- -- always installed on startup, useful for parsers without a strict filetype
@@ -243,6 +242,27 @@ lvim.plugins = {
     },
     ft = { "fugitive" }
   },
+  {
+    "folke/trouble.nvim",
+    -- dependencies = { "nvim-tree/nvim-web-devicons" },
+    opts = {
+      icons = false,
+      height = 5,
+      fold_open = "v",      -- icon used for open folds
+      fold_closed = ">",    -- icon used for closed folds
+      indent_lines = false, -- add an indent guide below the fold icons
+      mode = "document_diagnostics",
+      signs = {
+        -- icons / text used for a diagnostic
+        error = "error",
+        warning = "warn",
+        hint = "hint",
+        information = "info"
+      },
+      auto_open = true,
+      use_diagnostic_signs = false -- enabling this will use the signs defined in your lsp client
+    },
+  }
 }
 
 -- -- Autocommands (`:help autocmd`) <https://neovim.io/doc/user/autocmd.html>
