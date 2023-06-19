@@ -16,7 +16,9 @@ lvim.format_on_save = {
   pattern = "*.*",
   timeout = 1000,
 }
-
+vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
+lvim.builtin.nvimtree.setup.hijack_netrw = false
+-- lvim.builtin.nvimtree.setup.disable_netrw = true
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
@@ -91,6 +93,9 @@ mapn({ "i", "n", "v" }, "<F13>", function()
 end, { desc = "Show LSP hover" })
 mapn({ "i", "n", "v" }, "<F14>", "<C-W>w", { desc = "Cursor to other split" })
 mapn({ "i", "n", "v" }, "<F15>", "<cmd>BufferLineTogglePin<cr>", { desc = "Pin" })
+mapn({ "n" }, "<F21>", function()
+  require("persistence").load()
+end)
 mapn({ "i", "n", "v" }, "<F22>", function()
   vim.diagnostic.open_float()
 end, { desc = "Show diagnostics" })
@@ -112,11 +117,12 @@ end, { desc = "Search words in all files" })
 -- -- Change theme settings
 -- lvim.colorscheme = "lunar"
 
-lvim.builtin.alpha.active = true
-lvim.builtin.alpha.mode = "dashboard"
+lvim.builtin.alpha.active = false
+-- lvim.builtin.alpha.mode = "normal"
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
+
 
 -- Automatically install missing parsers when entering buffer
 lvim.builtin.treesitter.auto_install = true
@@ -260,6 +266,29 @@ lvim.plugins = {
       use_diagnostic_signs = false -- enabling this will use the signs defined in your lsp client
     },
   },
+  {
+    "folke/persistence.nvim",
+    event = "BufReadPre",
+    opts = {
+      dir = vim.fn.expand(vim.fn.stdpath "config" .. "/session/"),
+    }
+  }
+  -- {
+  --   "rmagatti/auto-session",
+  --   config = function()
+  --     require("auto-session").setup({
+  --       log_level = "info",
+  --       auto_session_enable_last_session = false,
+  --       -- auto_session_root_dir = vim.fn.stdpath("data") .. "/sessions/",
+  --       auto_session_enabled = true,
+  --       auto_save_enabled = true,
+  --       auto_restore_enabled = true,
+  --       -- auto_session_suppress_dirs = { "~/", "~/Projects" },
+  --       auto_session_suppress_dirs = nil,
+  --       auto_session_use_git_branch = true,
+  --     })
+  --   end,
+  -- },
 }
 
 -- -- Autocommands (`:help autocmd`) <https://neovim.io/doc/user/autocmd.html>
