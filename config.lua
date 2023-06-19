@@ -93,9 +93,6 @@ mapn({ "i", "n", "v" }, "<F13>", function()
 end, { desc = "Show LSP hover" })
 mapn({ "i", "n", "v" }, "<F14>", "<C-W>w", { desc = "Cursor to other split" })
 mapn({ "i", "n", "v" }, "<F15>", "<cmd>BufferLineTogglePin<cr>", { desc = "Pin" })
-mapn({ "n" }, "<F21>", function()
-  require("persistence").load()
-end)
 mapn({ "i", "n", "v" }, "<F22>", function()
   vim.diagnostic.open_float()
 end, { desc = "Show diagnostics" })
@@ -117,8 +114,22 @@ end, { desc = "Search words in all files" })
 -- -- Change theme settings
 -- lvim.colorscheme = "lunar"
 
-lvim.builtin.alpha.active = false
--- lvim.builtin.alpha.mode = "normal"
+lvim.builtin.alpha.active = true
+lvim.builtin.alpha.mode = "dashboard"
+
+lvim.builtin.alpha.dashboard.section.buttons.entries = {
+  { "r", lvim.icons.ui.History .. "  Recent Sessin", "<CMD>lua require(\"persistence\").load()<CR>" },
+  { "f", lvim.icons.ui.FindFile .. "  Find File",    "<CMD>Telescope find_files<CR>" },
+  { "n", lvim.icons.ui.NewFile .. "  New File",      "<CMD>ene!<CR>" },
+  { "p", lvim.icons.ui.Project .. "  Projects ",     "<CMD>Telescope projects<CR>" },
+  { "t", lvim.icons.ui.FindText .. "  Find Text",    "<CMD>Telescope live_grep<CR>" },
+  {
+    "c",
+    lvim.icons.ui.Gear .. "  Configuration",
+    "<CMD>edit " .. require("lvim.config"):get_user_config_path() .. " <CR>",
+  },
+  { "q", lvim.icons.ui.Close .. "  Quit", "<CMD>quit<CR>" },
+}
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
