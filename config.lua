@@ -64,6 +64,7 @@ map("v", "<S-Up>", "<Up>", { desc = "Selection Up" })
 map("v", "<S-Down>", "<Down>", { desc = "Selection Down" })
 
 mapn({ "i", "n", "v" }, "<C-q>", "<cmd>BufDel<cr>", { desc = "Close Window" })
+mapn({ "i", "n", "v" }, "<F17>", "<cmd>qa<cr>", { desc = "Close All Windows" })
 mapn({ "i", "n", "v" }, "<A-Enter>", function()
   vim.lsp.buf.code_action()
 end, { desc = "Quick Fix" })
