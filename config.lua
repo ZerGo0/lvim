@@ -284,23 +284,27 @@ lvim.plugins = {
     opts = {
       dir = vim.fn.expand(vim.fn.stdpath "config" .. "/session/"),
     }
+  },
+  {
+    "kevinhwang91/nvim-ufo",
+    dependencies = {
+      "kevinhwang91/promise-async"
+    },
+    config = function()
+      require('ufo').setup({
+        provider_selector = function(bufnr, filetype, buftype)
+          return { 'treesitter', 'indent' }
+        end
+      })
+    end,
+    init = function()
+      vim.o.foldcolumn = '1' -- '0' is not bad
+      vim.o.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
+      vim.o.foldlevelstart = 99
+      vim.o.foldenable = true
+    end,
+    lazy = false
   }
-  -- {
-  --   "rmagatti/auto-session",
-  --   config = function()
-  --     require("auto-session").setup({
-  --       log_level = "info",
-  --       auto_session_enable_last_session = false,
-  --       -- auto_session_root_dir = vim.fn.stdpath("data") .. "/sessions/",
-  --       auto_session_enabled = true,
-  --       auto_save_enabled = true,
-  --       auto_restore_enabled = true,
-  --       -- auto_session_suppress_dirs = { "~/", "~/Projects" },
-  --       auto_session_suppress_dirs = nil,
-  --       auto_session_use_git_branch = true,
-  --     })
-  --   end,
-  -- },
 }
 
 -- -- Autocommands (`:help autocmd`) <https://neovim.io/doc/user/autocmd.html>
