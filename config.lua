@@ -63,7 +63,17 @@ map("v", "<S-Right>", "<Right>", { desc = "Selection Right" })
 map("v", "<S-Up>", "<Up>", { desc = "Selection Up" })
 map("v", "<S-Down>", "<Down>", { desc = "Selection Down" })
 
-mapn({ "i", "n", "v" }, "<C-q>", "<cmd>BufDel<cr>", { desc = "Close Window" })
+mapn({ "i", "n", "v" }, "<C-q>", function()
+  -- if we are in spectre replace mode, then close it using q
+  -- we do this by checking if the current buffer is a spectre buffer
+  if vim.bo.filetype == "spectre_panel" then
+    vim.cmd("q")
+  else
+    vim.cmd("BufDel")
+  end
+end
+
+, { desc = "Close Window" })
 mapn({ "i", "n", "v" }, "<F17>", "<cmd>qa<cr>", { desc = "Close All Windows" })
 mapn({ "i", "n", "v" }, "<A-Enter>", function()
   vim.lsp.buf.code_action()
@@ -74,6 +84,8 @@ mapn({ "i", "n", "v" }, "<C-a>", "<ESC>ggVG", { desc = "Select all" })
 mapn({ "i", "n", "v" }, "<C-s>", "<cmd>w!<cr>", { desc = "Save" })
 mapn({ "i", "n", "v" }, "<C-y>", "<cmd>red<cr>", { desc = "Redo" })
 mapn({ "i", "n", "v" }, "<C-z>", "<cmd>u<cr>", { desc = "Undo" })
+mapn({ "i", "n", "v" }, "<C-f>", "<cmd>Telescope current_buffer_fuzzy_find<cr>", { desc = "Search in current file" })
+mapn({ "i", "n", "v" }, "<A-f>", "<cmd>lua require('spectre').open()<cr>", { desc = "Replace in current file" })
 mapn({ "i", "n", "v" }, "<F2>", function()
   vim.lsp.buf.rename()
 end, { desc = "Rename" })
@@ -284,6 +296,20 @@ lvim.plugins = {
     opts = {
       dir = vim.fn.expand(vim.fn.stdpath "config" .. "/session/"),
     }
+  },
+  -- {
+  --   "AckslD/muren.nvim",
+  --   config = true
+  -- },
+  {
+    "nvim-pack/nvim-spectre",
+    event = "BufRead",
+    dependencies = {
+      "nvim-lua/plenary.nvim"
+    },
+    config = function()
+      require("spectre").setup()
+    end,
   },
   -- {
   --   "kevinhwang91/nvim-ufo",
