@@ -1,3 +1,8 @@
+if vim.g.neovide then
+  -- neovide respects KDE's scale factor, so we need to adjust the scale factor
+  vim.g.neovide_scale_factor = 0.5
+end
+
 --[[
  THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
  `lvim` is the global options object
@@ -18,6 +23,10 @@ lvim.format_on_save = {
 }
 vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
 lvim.builtin.nvimtree.setup.hijack_netrw = false
+-- telescope exact match
+lvim.builtin.telescope.extensions.fzf = {
+  fuzzy = false
+}
 -- lvim.builtin.nvimtree.setup.disable_netrw = true
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
@@ -84,7 +93,10 @@ mapn({ "i", "n", "v" }, "<C-a>", "<ESC>ggVG", { desc = "Select all" })
 mapn({ "i", "n", "v" }, "<C-s>", "<cmd>w!<cr>", { desc = "Save" })
 mapn({ "i", "n", "v" }, "<C-y>", "<cmd>red<cr>", { desc = "Redo" })
 mapn({ "i", "n", "v" }, "<C-z>", "<cmd>u<cr>", { desc = "Undo" })
+-- PASTE dont insert new line at the start of the pasted text
+mapn({ "i", "n", "v" }, "<C-v>", "<ESC>\"+gP", { desc = "Paste" })
 mapn({ "i", "n", "v" }, "<C-f>", "<cmd>Telescope current_buffer_fuzzy_find<cr>", { desc = "Search in current file" })
+
 mapn({ "i", "n", "v" }, "<A-f>", "<cmd>lua require('spectre').open()<cr>", { desc = "Replace in current file" })
 mapn({ "i", "n", "v" }, "<F2>", function()
   vim.lsp.buf.rename()
@@ -115,7 +127,8 @@ end, { desc = "Search all files" })
 mapn({ "i", "n", "v" }, "<F24>", function()
   require("telescope.builtin").live_grep()
 end, { desc = "Search words in all files" })
-
+mapn({ "i", "n", "v" }, "<C-F23>", "<C-O>", { desc = "Back" })
+mapn({ "i", "n", "v" }, "<C-F24>", "<C-I>", { desc = "Forward" })
 
 -- lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 -- lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
@@ -204,13 +217,15 @@ formatters.setup {
 -- -- Additional Plugins <https://www.lunarvim.org/docs/plugins#user-plugins>
 lvim.plugins = {
   {
-    "Shatur/neovim-ayu"
+    "Shatur/neovim-ayu",
   },
   {
     "ojroques/nvim-bufdel",
+    event = "BufRead",
   },
   {
     "nvim-treesitter/nvim-treesitter-context",
+    event = "BufRead",
     config = function()
       require("treesitter-context").setup({
         enable = true,
@@ -219,6 +234,7 @@ lvim.plugins = {
   },
   {
     "ray-x/lsp_signature.nvim",
+    event = "InsertEnter",
     config = function()
       require("lsp_signature").setup({
         floating_window = false
@@ -243,6 +259,7 @@ lvim.plugins = {
   {
     "zbirenbaum/copilot-cmp",
     dependencies = { "zbirenbaum/copilot.lua" },
+    evnt = "InsertEnter",
     enabled = true,
     config = function()
       require("copilot_cmp").setup({
@@ -252,6 +269,7 @@ lvim.plugins = {
   },
   {
     "tpope/vim-fugitive",
+    event = "BufRead",
     cmd = {
       "G",
       "Git",
@@ -271,6 +289,7 @@ lvim.plugins = {
   },
   {
     "folke/trouble.nvim",
+    event = "BufRead",
     -- dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {
       icons = false,
