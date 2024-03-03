@@ -27,6 +27,7 @@ lvim.builtin.nvimtree.setup.hijack_netrw = false
 lvim.builtin.telescope.extensions.fzf = {
   fuzzy = false
 }
+lvim.builtin.dap.active = false
 -- lvim.builtin.nvimtree.setup.disable_netrw = true
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
@@ -94,7 +95,7 @@ mapn({ "i", "n", "v" }, "<C-s>", "<cmd>w!<cr>", { desc = "Save" })
 mapn({ "i", "n", "v" }, "<C-y>", "<cmd>red<cr>", { desc = "Redo" })
 mapn({ "i", "n", "v" }, "<C-z>", "<cmd>u<cr>", { desc = "Undo" })
 -- PASTE dont insert new line at the start of the pasted text
-mapn({ "i", "n", "v" }, "<C-v>", "<ESC>\"+gP", { desc = "Paste" })
+mapn({ "i", "n", "v" }, "<C-v>", "<ESC>\"+p", { desc = "Paste" })
 mapn({ "i", "n", "v" }, "<C-f>", "<cmd>Telescope current_buffer_fuzzy_find<cr>", { desc = "Search in current file" })
 
 mapn({ "i", "n", "v" }, "<A-f>", "<cmd>lua require('spectre').open()<cr>", { desc = "Replace in current file" })
@@ -330,6 +331,45 @@ lvim.plugins = {
       require("spectre").setup()
     end,
   },
+  {
+    "doctorfree/cheatsheet.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      { "nvim-telescope/telescope.nvim" },
+      { "nvim-lua/popup.nvim" },
+      { "nvim-lua/plenary.nvim" },
+    },
+    config = function()
+      local ctactions = require("cheatsheet.telescope.actions")
+      require("cheatsheet").setup({
+        bundled_cheetsheets = {
+          enabled = {
+            "default",
+            "regex",
+          },
+          disabled = { "nerd-fonts", "lua", "markdown", "netrw", "unicode" }
+        },
+        bundled_plugin_cheatsheets = {
+          enabled = {
+            -- "auto-session",
+            -- "goto-preview",
+            -- "octo.nvim",
+            -- "telescope.nvim",
+            -- "vim-easy-align",
+            -- "vim-sandwich",
+          },
+          disabled = { "gitsigns" },
+        },
+        include_only_installed_plugins = true,
+        telescope_mappings = {
+          ["<CR>"] = ctactions.select_or_fill_commandline,
+          ["<A-CR>"] = ctactions.select_or_execute,
+          ["<C-Y>"] = ctactions.copy_cheat_value,
+          ["<C-E>"] = ctactions.edit_user_cheatsheet,
+        },
+      })
+    end,
+  }
   -- {
   --   "kevinhwang91/nvim-ufo",
   --   dependencies = {
